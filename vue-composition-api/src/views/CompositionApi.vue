@@ -5,13 +5,13 @@
       <span class="badge badge-pill badge-warning">{{idleTime}}</span> saniye
     </div>
     <div class="col-md-12 text-right mb-2">
-      <button class="btn btn-info mr-1" @click="toggleState">
+      <button class="btn btn-info mr-1" @click="toggleShow">
         Ürün Listesini Göster/Gizle
         <span class="badge badge-pill badge-dark">{{productCount}}</span>
       </button>
       <button class="btn btn-success" @click="addProduct">Ürün Ekle</button>
     </div>
-    <div class="col-md-12" v-if="state">
+    <div class="col-md-12" v-if="show">
       <table class="table table-striped table-hover">
         <thead class="thead-dark">
           <tr>
@@ -39,12 +39,12 @@
 import { ref, onMounted, onUnmounted, computed } from '@vue/composition-api'
 export default {
   setup() {
-    const { state, toggleState } = useActivePassive()
+    const { show, toggleShow } = useToggleShow()
     const { products, productCount, addProduct } = useProduct()
     const { idleTime } = useActivityTracker()
     return {
-      state,
-      toggleState,
+      show,
+      toggleShow,
       products,
       productCount,
       addProduct,
@@ -53,12 +53,12 @@ export default {
   }
 }
 
-function useActivePassive(def = true) {
-  const state = ref(def)
-  const toggleState = () => {
-    state.value = !state.value
+function useToggleShow(def = true) {
+  const show = ref(def)
+  const toggleShow = () => {
+    show.value = !show.value
   }
-  return { state, toggleState }
+  return { show, toggleShow }
 }
 
 function useProduct() {
